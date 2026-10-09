@@ -17,6 +17,41 @@ function getCookie(name) {
   return null;
 }
 
+// Prevent right-click context menu
+document.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+});
+
+// Prevent developer tools keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  // Prevent F12
+  if (e.key === 'F12' || e.keyCode === 123) {
+    e.preventDefault();
+    return;
+  }
+
+  const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+  const isShiftOrAlt = e.shiftKey || e.altKey;
+
+  // Prevent Ctrl+Shift+I / Cmd+Option+I, Ctrl+Shift+J / Cmd+Option+J,
+  // Ctrl+Shift+C / Cmd+Option+C, Ctrl+Shift+K
+  if (isCtrlOrCmd && isShiftOrAlt && (
+    e.key === 'I' || e.key === 'i' ||
+    e.key === 'J' || e.key === 'j' ||
+    e.key === 'C' || e.key === 'c' ||
+    e.key === 'K' || e.key === 'k'
+  )) {
+    e.preventDefault();
+    return;
+  }
+
+  // Prevent Ctrl+U / Cmd+Option+U (View Source)
+  if (isCtrlOrCmd && (e.key === 'U' || e.key === 'u')) {
+    e.preventDefault();
+    return;
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   let count = parseInt(getCookie('cookieClicks'), 10) || 0;
   const countDisplay = document.getElementById('click-count');
