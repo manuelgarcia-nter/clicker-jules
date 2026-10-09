@@ -20,14 +20,15 @@
       justify-content: center;
       align-items: center;
       user-select: none;
-      overflow: hidden;
+      overflow-x: hidden;
+      padding: 20px 0;
     }
 
     .container {
       text-align: center;
       background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(10px);
-      padding: 40px 60px;
+      padding: 30px 40px;
       border-radius: 24px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.4);
@@ -35,6 +36,8 @@
       flex-direction: column;
       align-items: center;
       position: relative;
+      max-width: 500px;
+      width: 90%;
     }
 
     h1 {
@@ -48,7 +51,7 @@
       font-size: 1.8rem;
       font-weight: bold;
       color: #3e2723;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       background: rgba(255, 255, 255, 0.6);
       padding: 10px 25px;
       border-radius: 50px;
@@ -71,8 +74,8 @@
     }
 
     .cookie-svg {
-      width: 220px;
-      height: 220px;
+      width: 200px;
+      height: 200px;
       filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
       transition: filter 0.2s ease;
     }
@@ -104,7 +107,7 @@
     }
 
     .reset-btn {
-      margin-top: 30px;
+      margin-top: 20px;
       padding: 8px 18px;
       font-size: 0.9rem;
       color: #fff;
@@ -118,9 +121,111 @@
     .reset-btn:hover {
       background-color: #6d4c41;
     }
+
+    /* Achievements Section */
+    .achievements-section {
+      margin-top: 25px;
+      width: 100%;
+    }
+
+    .achievements-section h2 {
+      color: #5c3d11;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+    }
+
+    .trophies-grid {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .trophy-card {
+      background: rgba(255, 255, 255, 0.4);
+      padding: 12px 10px;
+      border-radius: 16px;
+      width: 110px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .trophy-card.locked {
+      opacity: 0.45;
+      filter: grayscale(100%);
+    }
+
+    .trophy-card.unlocked {
+      opacity: 1;
+      filter: grayscale(0%);
+      background: rgba(255, 255, 255, 0.85);
+      border-color: #f8b500;
+      box-shadow: 0 4px 12px rgba(248, 181, 0, 0.3);
+      animation: popIn 0.4s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .trophy-icon {
+      font-size: 2.2rem;
+      margin-bottom: 4px;
+      line-height: 1;
+    }
+
+    .trophy-title {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #3e2723;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+
+    .trophy-desc {
+      font-size: 0.7rem;
+      color: #6d4c41;
+      font-weight: 500;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #3e2723;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      font-weight: bold;
+      font-size: 0.95rem;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      opacity: 1;
+      z-index: 1000;
+      border: 2px solid #f8b500;
+      pointer-events: none;
+    }
+
+    .toast.hidden {
+      opacity: 0;
+      transform: translate(-50%, -20px);
+    }
   </style>
 </head>
 <body>
+
+  <div id="toast-notification" class="toast hidden">
+    <span id="toast-message">🏆 Achievement Unlocked!</span>
+  </div>
 
   <div class="container">
     <h1>Cookie Clicker</h1>
@@ -154,6 +259,27 @@
         <circle cx="138" cy="123" r="3" fill="#5d4037" />
       </svg>
     </button>
+
+    <div class="achievements-section">
+      <h2>🏆 Trophies</h2>
+      <div class="trophies-grid">
+        <div class="trophy-card locked" id="trophy-10" data-threshold="10">
+          <div class="trophy-icon">🥉</div>
+          <div class="trophy-title">Beginner</div>
+          <div class="trophy-desc">10 Clicks</div>
+        </div>
+        <div class="trophy-card locked" id="trophy-100" data-threshold="100">
+          <div class="trophy-icon">🥈</div>
+          <div class="trophy-title">Enthusiast</div>
+          <div class="trophy-desc">100 Clicks</div>
+        </div>
+        <div class="trophy-card locked" id="trophy-1000" data-threshold="1000">
+          <div class="trophy-icon">🥇</div>
+          <div class="trophy-title">Master</div>
+          <div class="trophy-desc">1,000 Clicks</div>
+        </div>
+      </div>
+    </div>
 
     <button id="reset-btn" class="reset-btn">Reset Counter</button>
   </div>
