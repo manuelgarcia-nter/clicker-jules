@@ -1,0 +1,24 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A simple, interactive web page featuring a centered cookie with a click counter, floating \"+1\" animations, and persistence using HTTP cookies.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manuelgarcia-nter/clicker-jules.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/manuelgarcia-nter/clicker-jules/issues"
+  },
+  "homepage": "https://github.com/manuelgarcia-nter/clicker-jules#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.0"
+  }
+}

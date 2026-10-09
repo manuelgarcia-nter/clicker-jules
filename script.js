@@ -17,6 +17,51 @@ function getCookie(name) {
   return null;
 }
 
+const ACHIEVEMENTS = [
+  { threshold: 10, id: 'trophy-10', name: 'Beginner (10 Clicks)' },
+  { threshold: 100, id: 'trophy-100', name: 'Enthusiast (100 Clicks)' },
+  { threshold: 1000, id: 'trophy-1000', name: 'Master (1,000 Clicks)' }
+];
+
+let toastTimeout = null;
+
+function showToast(message) {
+  const toast = document.getElementById('toast-notification');
+  const toastMsg = document.getElementById('toast-message');
+  if (!toast || !toastMsg) return;
+
+  toastMsg.textContent = message;
+  toast.classList.remove('hidden');
+
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+  }
+
+  toastTimeout = setTimeout(() => {
+    toast.classList.add('hidden');
+  }, 3000);
+}
+
+function updateAchievements(currentClicks, showNotification = true) {
+  ACHIEVEMENTS.forEach(ach => {
+    const trophyElem = document.getElementById(ach.id);
+    if (!trophyElem) return;
+
+    if (currentClicks >= ach.threshold) {
+      if (trophyElem.classList.contains('locked')) {
+        trophyElem.classList.remove('locked');
+        trophyElem.classList.add('unlocked');
+        if (showNotification) {
+          showToast(`🏆 Trophy Unlocked: ${ach.name}!`);
+        }
+      }
+    } else {
+      trophyElem.classList.remove('unlocked');
+      trophyElem.classList.add('locked');
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   let count = parseInt(getCookie('cookieClicks'), 10) || 0;
   const countDisplay = document.getElementById('click-count');
@@ -27,11 +72,17 @@ document.addEventListener('DOMContentLoaded', () => {
     countDisplay.textContent = count;
   }
 
+  // Initial achievement check without showing toast on page load
+  updateAchievements(count, false);
+
   if (cookieBtn) {
     cookieBtn.addEventListener('click', (e) => {
       count++;
       countDisplay.textContent = count;
       setCookie('cookieClicks', count);
+
+      // Check achievements after increment
+      updateAchievements(count, true);
 
       // Create floating +1 animation
       const floatingText = document.createElement('div');
@@ -58,6 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
       count = 0;
       countDisplay.textContent = count;
       setCookie('cookieClicks', count);
+
+      // Reset achievement states
+      updateAchievements(count, false);
     });
   }
 });
